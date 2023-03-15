@@ -11,9 +11,12 @@ def process_tables(BASE_DIR, conn, table_name):
 
 
 def main():
-    BASE_DIR='/Users/nitinchandekar/udemy-spark/Research/data/retail_db_json'
+    BASE_DIR=os.environ.get('BASE_DIR')
     table_names = 'departments,orders'.split(',')
-    conn = 'postgresql://retail_user:itversity@localhost:5452/retail_db'
+    configs = dict(os.environ.items())
+    print("DB_PORT is ", configs["DB_PORT"])
+    conn = f'postgresql://{configs["DB_USER"]}:{configs["DB_PASS"]}@{configs["DB_HOST"]}:{configs["DB_PORT"]}/{configs["DB_NAME"]}'
+    print ("conn is ", conn)
     for table_name in table_names:
         print("table name is ", table_name)
         process_tables(BASE_DIR, conn, table_name)
